@@ -1,23 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
-    <title>Cadastro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="icon" type="image/png" href="../static/img/icon_wr.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
+
 <body>
-    <h1>Cadastro</h1>
-
     <form method="POST" action="/cadastro">
-        <label for="user">Usuário:</label>
-        <input type="text" id="user" name="user"><br>
-
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password"><br>
-
-        <input type="submit" value="Cadastrar">
+        <div class="container d-flex align-items-center justify-content-center vh-100">
+            <div class="col-md-10 col-lg-5">
+                <div class="p-4 p-md-5 border rounded-3 bg-light">
+                    <div class="text-center">
+                        <img src="../static/img/1.png" class="img-fluid" alt="...">
+                      </div>
+                      {% if error1 %}
+                      <div class="alert alert-danger" role="alert">
+                        "Nome de usuario ja cadastrado em sistema!"
+                      </div>
+                      {% endif %}
+                      {% if ok %}
+                      <div class="alert alert-success" role="alert">
+                        Cadastro efetuado com sucesso!!
+                      </div>
+                      {% endif %}
+                    <div class="form-floating">
+                        <input type="text" class="form-control mb-3" id="user" placeholder="Usuário" name="user">
+                        <label for="user">Usuário:</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" placeholder="Senha" name="password"/>
+                        <label for="password">Senha:</label>
+                    </div>
+                    <div class="p-1 p-md-1 mb-1 bg-light text-center">
+                        <button class="btn btn-lg btn-success w-100 h-100" type="submit">Cadastrar</button>
+                    </div>
+                    <div class="p-1 p-md-1  bg-light text-center">
+                        <a href="/">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-    <a href="/">Pagina Inicial</a>
-    <a href="/login">Login</a>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
+
 </html>
