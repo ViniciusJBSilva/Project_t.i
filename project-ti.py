@@ -5,7 +5,7 @@ import shutil
 from gmplot import *
 import datetime
 from geopy.distance import geodesic
-from pyngrok import ngrok
+
 
 app = Flask(__name__, template_folder='templates')
 
