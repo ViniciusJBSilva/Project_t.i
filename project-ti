@@ -1,0 +1,96 @@
+from flask import Flask, render_template, request, redirect
+import mysql.connector
+
+app = Flask(__name__, template_folder='templates')
+
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '123456',
+    'database': 'db_ti'
+}
+
+@app.route('/', methods=['GET'])
+def formulario():
+    return render_template('home.html')
+
+
+#cadastro black
+
+@app.route('/cadastro', methods=['GET'])
+def exibir_cadastro():
+    return render_template('cadastro.html')
+
+@app.route('/cadastrook', methods=['GET'])
+def exibit_cadastro_feito():
+    return render_template('cadastrook.html')
+
+@app.route('/cadastro', methods=['POST'])
+def cadastrar():
+    user = request.form['user']
+    password = request.form['password']
+
+    conexao = mysql.connector.connect(**db_config)
+    cursor = conexao.cursor()
+
+    consulta = "SELECT * FROM cadastro WHERE user = %s"
+    valores = (user,)
+    cursor.execute(consulta, valores)
+    resultado = cursor.fetchone()
+
+    if resultado:
+        return 'Nome de usuario ja cadastrado em sistema!'
+    
+    else:
+        insercao = "INSERT INTO `cadastro` (`user`, `password`) VALUES (%s, %s)"
+        valores = (user, password)
+        cursor.execute(insercao, valores)
+        conexao.commit()
+
+        cursor.close()
+        conexao.close()
+
+    
+        return redirect('/cadastrook')
+
+    
+
+    
+
+
+#login black
+
+@app.route('/login', methods=['GET'])
+def exibir_login():
+    return render_template('login.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+        user = request.form['user']
+        password = request.form['password']
+
+        conexao = mysql.connector.connect(**db_config)
+        cursor = conexao.cursor()
+
+        consulta = "SELECT * FROM `cadastro` WHERE `user` = %s AND `password` = %s"
+        valores = (user, password)
+        cursor.execute(consulta, valores)
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexao.close()
+
+        if resultado:
+            return "Login bem-sucedido"
+        else:
+        
+            return "Usuário ou senha incorretos"
+
+    
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
