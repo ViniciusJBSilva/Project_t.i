@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
+import json
+import shutil
+from gmplot import GoogleMapPlotter
 
 app = Flask(__name__, template_folder='templates')
 
@@ -10,20 +13,39 @@ db_config = {
     'database': 'db_ti'
 }
 
+#renderização das html
+
 @app.route('/', methods=['GET'])
 def formulario():
     return render_template('home.html')
 
 
-#cadastro black
-
 @app.route('/cadastro', methods=['GET'])
 def exibir_cadastro():
     return render_template('cadastro.html')
 
+
 @app.route('/cadastrook', methods=['GET'])
 def exibit_cadastro_feito():
     return render_template('cadastrook.html')
+
+@app.route('/login', methods=['GET'])
+def exibir_login():
+    return render_template('login.html')
+
+@app.route('/map', methods=['GET'])
+def exibir_map():
+    return render_template('map.html')
+
+
+@app.route('/posicao', methods=['GET'])
+def exibir_posicao():
+    return render_template('posicao.html')
+
+
+
+
+
 
 @app.route('/cadastro', methods=['POST'])
 def cadastrar():
@@ -53,16 +75,7 @@ def cadastrar():
     
         return redirect('/cadastrook')
 
-    
 
-    
-
-
-#login black
-
-@app.route('/login', methods=['GET'])
-def exibir_login():
-    return render_template('login.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -82,12 +95,39 @@ def login():
         conexao.close()
 
         if resultado:
-            return "Login bem-sucedido"
+            return redirect('/posicao')
         else:
         
             return "Usuário ou senha incorretos"
+        
 
-    
+
+
+@app.route('/posicao', methods=['POST'])
+def posi():
+    with open('position.json') as file:
+        data = json.load(file)
+
+
+    coordinates = [(float(item['latitude']), float(item['longitude'])) for item in data['data']]
+
+
+    gmap = GoogleMapPlotter(coordinates[0][0], coordinates[0][1], zoom=12)
+
+
+    for lat, lon in coordinates:
+        gmap.marker(lat, lon)
+
+
+    output_file = 'map.html'
+    gmap.draw(output_file)
+
+
+    destination_folder = 'templates/'
+    shutil.move(output_file, destination_folder + output_file)
+
+
+    return redirect('/map')
 
 
 
