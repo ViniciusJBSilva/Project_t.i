@@ -37,16 +37,18 @@
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
               </li>
-              <li class="d-flex text-decoration-none mt-auto">
-                <form method="POST" action="/posicao">
-                    <button class="btn btn-outline-success btn me-2 ms-auto" type="submit">Atualizar Mapa</button>
-                </form>
-              </li>
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            {% if noresult %}
+            <div class="alert alert-danger" role="alert">{{ noresult }}</p>
+            {% endif %}
+            {% if novehicle %}
+            <div class="alert alert-danger" role="alert">{{ novehicle }}</p>
+            {% endif %}
+            <form method="POST" action="/search" class="d-flex" role="search">
+              <input class="form-control me-2" type="search" id="placa" name="placa" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+          </form>
           </div>
         </div>
       </nav>
