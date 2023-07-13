@@ -33,11 +33,6 @@ def exibir_cadastro():
     return render_template('cadastro.html')
 
 
-@app.route('/cadastrook', methods=['GET'])
-def exibir_cadastro_feito():
-    return render_template('cadastrook.html')
-
-
 @app.route('/map', methods=['GET'])
 def exibir_map():
     return render_template('map.html')
